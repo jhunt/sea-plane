@@ -1,0 +1,151 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: sea-plane
+  name: shield
+data:
+  vault.hcl: |
+    storage "file" {
+      path = "/vault/file"
+    }
+    listener "tcp" {
+      address = "127.0.0.1:8200"
+      tls_disable = 1
+    }
+    api_addr = "http://127.0.0.1:8200"
+  ssh.key: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    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
+    -----END OPENSSH PRIVATE KEY-----
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: sea-plane
+  name: shield
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: sea-plane
+  name: shield
+spec:
+  serviceName: shield
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shield
+  template:
+    metadata:
+      labels:
+        app: shield
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: shield
+        - name: data
+          persistentVolumeClaim:
+            claimName: shield
+
+      containers:
+        - name: shield
+          image: shieldproject/shield:8
+          ports:
+            - name: shield
+              containerPort: 80
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/shield
+              subPath: shield
+            - name: config
+              mountPath: /etc/shield
+
+          env:
+            - name:  SHIELD_VAULT_ADDRESS
+              value: http://127.0.0.1:8200
+            - name:  SHIELD_API_BIND
+              value: 0.0.0.0:80
+
+          command:
+            - /shield/init/core
+
+        - name: vault
+          image: vault:1.0.2
+          securityContext:
+            capabilities:
+              add: 
+                - IPC_LOCK
+
+          volumeMounts:
+            - name: data
+              mountPath: /vault/file
+              subPath: vault
+            - name: config
+              mountPath: /vault/config
+
+          command:
+            - vault
+            - server
+            - -config
+            - /vault/config/vault.hcl
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: sea-plane
+  name: shield
+spec:
+  type: ClusterIP
+  selector:
+    app: shield
+  ports:
+    - name: shield
+      targetPort: shield
+      port: 80
