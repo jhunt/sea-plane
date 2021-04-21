@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: sea-plane
+  name: registry
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 80Gi
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: sea-plane
+  name: registry
+spec:
+  replicas: 1
+  serviceName: registry
+
+  selector:
+    matchLabels:
+      app: registry
+
+  template:
+    metadata:
+      labels:
+        app: registry
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: registry
+        - name: data
+          persistentVolumeClaim:
+            claimName: registry
+      containers:
+        - name: registry
+          image: registry:2
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/registry
+
+          ports:
+            - name: registry
+              containerPort: 5000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: sea-plane
+  name: registry
+spec:
+  selector:
+    app: registry
+  ports:
+    - name: registry
+      targetPort: registry
+      port: 5000
