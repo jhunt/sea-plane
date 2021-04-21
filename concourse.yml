@@ -1,0 +1,4 @@
+# uses helm:
+#
+#   helm repo add concourse https://concourse-charts.storage.googleapis.com/
+#   helm install cicd concourse/concourse
