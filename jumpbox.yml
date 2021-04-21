@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: sea-plane
+  name: jumpbox
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 60Gi
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: sea-plane
+  name: jumpbox
+spec:
+  replicas: 1
+  serviceName: jumpbox
+
+  selector:
+    matchLabels:
+      app: jumpbox
+
+  template:
+    metadata:
+      labels:
+        app: jumpbox
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: jumpbox
+      containers:
+        - name: jumpbox
+          image: huntprod/jumpbox
+
+          volumeMounts:
+            - name: data
+              mountPath: /home
+
+          command:
+            - pause
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: sea-plane
+  name: jumpbox
+spec:
+  selector:
+    app: jumpbox
+  ports:
+    - name: faux
+      targetPort: 1337
+      port: 1337
